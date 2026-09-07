@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -21,13 +22,15 @@ import Negocio.Grid;
 public class MainForm {
 
 	private static final int SIZE = 4;
-	
+
 	static Grid grid;
 
 	private JFrame frame;
 	private JPanel board;
 
 	private JLabel[][] cells = new JLabel[SIZE][SIZE];
+
+	private boolean gameOver;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -58,7 +61,7 @@ public class MainForm {
 		generateBoxes();
 		setupKeyBindings();
 	}
-	
+
 	private void refreshScreen() {
 		frame.getContentPane().repaint();
 	}
@@ -71,7 +74,7 @@ public class MainForm {
 				cell.setHorizontalAlignment(SwingConstants.CENTER);
 				cell.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
 				cell.setFont(new Font("SansSerif", Font.BOLD, 28));
-				
+
 				int number = matrix[row][col];
 				if (number != 0)
 					cell.setText(String.valueOf(number));
@@ -81,7 +84,7 @@ public class MainForm {
 			}
 		}
 	}
-	
+
 	private void updateBoxes() {
 		int[][] matrix = grid.getMatrix();
 		for (int row = 0; row < SIZE; row++) {
@@ -95,22 +98,30 @@ public class MainForm {
 	}
 
 	private void setupKeyBindings() {
-		bindArrow("UP", "ARRIBA", () -> {
-			grid.move(Grid.MoveDirection.Up);
-			updateBoxes();
-		});
-		bindArrow("DOWN", "ABAJO", () -> {
-			grid.move(Grid.MoveDirection.Down);
-			updateBoxes();
-		});
-		bindArrow("LEFT", "IZQUIERDA", () -> {
-			grid.move(Grid.MoveDirection.Left);
-			updateBoxes();
-		});
-		bindArrow("RIGHT", "DERECHA", () -> {
-			grid.move(Grid.MoveDirection.Right);
-			updateBoxes();
-		});
+		bindArrow("UP", "ARRIBA", () -> playTurn(Grid.MoveDirection.Up));
+		bindArrow("DOWN", "ABAJO", () -> playTurn(Grid.MoveDirection.Down));
+		bindArrow("LEFT", "IZQUIERDA", () -> playTurn(Grid.MoveDirection.Left));
+		bindArrow("RIGHT", "DERECHA", () -> playTurn(Grid.MoveDirection.Right));
+	}
+
+	private void playTurn(Grid.MoveDirection direction) {
+		if (gameOver || !grid.play(direction))
+			return;
+
+		updateBoxes();
+
+		if (grid.isGameOver()) {
+			gameOver = true;
+			showGameOver();
+		}
+	}
+
+	private void showGameOver() {
+		// TODO: falta el puntaje
+		JOptionPane.showMessageDialog(frame,
+				"No quedan movimientos. Juego terminado.",
+				"Threes!",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void bindArrow(String key, String actionName, Runnable onAction) {
@@ -121,7 +132,7 @@ public class MainForm {
 
 		content.getActionMap().put(actionName, new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				onAction.run();;
+				onAction.run();
 				System.out.println("presionó " + actionName);
 			}
 		});
