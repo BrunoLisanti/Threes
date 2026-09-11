@@ -165,8 +165,8 @@ public class Grid {
 		}
 		return true;
 	}
-
-	public int[][] getMatrix() {
-		return _matrix;
+	
+	public int getValueByPosition(int x, int y) {
+		return _matrix[x][y];
 	}
 }

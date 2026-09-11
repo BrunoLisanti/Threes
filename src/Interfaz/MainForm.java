@@ -67,7 +67,6 @@ public class MainForm {
 	}
 
 	private void generateBoxes() {
-		int[][] matrix = grid.getMatrix();
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 				JLabel cell = new JLabel();
@@ -75,7 +74,7 @@ public class MainForm {
 				cell.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
 				cell.setFont(new Font("SansSerif", Font.BOLD, 28));
 
-				int number = matrix[row][col];
+				int number = grid.getValueByPosition(row, col);
 				if (number != 0)
 					cell.setText(String.valueOf(number));
 
@@ -86,10 +85,9 @@ public class MainForm {
 	}
 
 	private void updateBoxes() {
-		int[][] matrix = grid.getMatrix();
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
-				int number = matrix[row][col];
+				int number = grid.getValueByPosition(row, col);
 				cells[row][col].setText(number == 0 ? "" : String.valueOf(number));
 			}
 		}
