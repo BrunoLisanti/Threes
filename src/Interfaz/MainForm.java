@@ -103,6 +103,7 @@ public class MainForm {
 	}
 
 	private void playTurn(Grid.MoveDirection direction) {
+		System.out.println("Puntaje: " + grid.calculateAndGetPoints());
 		if (gameOver || !grid.play(direction))
 			return;
 
@@ -116,8 +117,9 @@ public class MainForm {
 
 	private void showGameOver() {
 		// TODO: falta el puntaje
+		int points = grid.calculateAndGetPoints();
 		JOptionPane.showMessageDialog(frame,
-				"No quedan movimientos. Juego terminado.",
+				"No quedan movimientos. Juego terminado.\nPuntaje: " + String.valueOf(points),
 				"Threes!",
 				JOptionPane.INFORMATION_MESSAGE);
 	}

@@ -13,11 +13,11 @@
 [ ] - INFORME. Documento aparte donde se describa la implementación, se justifique
       la arquitectura elegida para separar en capas y se muestren ejemplos de las
       buenas prácticas aplicadas.
-[ ] - Mostrar el puntaje al usuario cuando el juego termina.
+[x] - Mostrar el puntaje al usuario cuando el juego termina.
 [x] - Tablero inicial de verdad.
 
 ### Limpieza antes de entregar
-[ ] - Encapsulamiento: Grid.getMatrix() devuelve la matriz interna, así que desde
+[x] - Encapsulamiento: Grid.getMatrix() devuelve la matriz interna, así que desde
       afuera se puede escribir el tablero. La consigna evalúa encapsulamiento
       explícitamente.
 [ ] - Hacer MainForm.grid de instancia.

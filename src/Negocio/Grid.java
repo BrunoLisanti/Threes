@@ -169,4 +169,17 @@ public class Grid {
 	public int getValueByPosition(int x, int y) {
 		return _matrix[x][y];
 	}
+	
+	public int calculateAndGetPoints() {
+		int result = 0;
+		for (int i = 0; i < SIDE; i++)
+		for (int j = 0; j < SIDE; j++) {
+			int val = _matrix[i][j];
+			if (val > 2) {
+				double logBase2 = Math.log(val / 3) / Math.log(2.0);
+				result += 3 * Math.pow(3, logBase2);
+			}
+		}
+		return result;
+	}
 }
