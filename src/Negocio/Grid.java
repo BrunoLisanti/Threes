@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class Grid {
 	private int[][] _matrix;
+	private int nextRandomTile;
 	private static final int SIDE = 4;
 	private static final int INITIAL_TILES = 9;
 
@@ -14,6 +15,7 @@ public class Grid {
 	public Grid() {
 		this(new int[SIDE][SIDE]);
 		placeInitialTiles();
+		nextRandomTile = randomTile();
 	}
 
 	public Grid(int[][] grid) {
@@ -36,16 +38,6 @@ public class Grid {
 
 	private int randomTile() {
 		return random.nextInt(3) + 1;
-	}
-
-	public void print() {
-		for (int row = 0; row < SIDE; row++) {
-			for (int col = 0; col < SIDE; col++) {
-				System.out.print(String.valueOf(_matrix[row][col]) + " ");
-			}
-			System.out.println("");
-		}
-
 	}
 
 	public enum MoveDirection {
@@ -135,7 +127,8 @@ public class Grid {
 	// Agrega una ficha nueva de valor 1, 2 o 3 en el borde opuesto al movimiento.
 	private void spawn(List<Integer> movedLines, MoveDirection direction) {
 		int randomLine = movedLines.get(random.nextInt(movedLines.size()));
-		int randomValue = randomTile();
+		int randomValue = nextRandomTile;
+		nextRandomTile = randomTile();
 
 		switch (direction) {
 			case Right -> _matrix[randomLine][0] = randomValue;
@@ -143,7 +136,6 @@ public class Grid {
 			case Down -> _matrix[0][randomLine] = randomValue;
 			case Up -> _matrix[SIDE - 1][randomLine] = randomValue;
 		}
-
 	}
 
 	// Copia independiente de la matriz.
@@ -158,15 +150,19 @@ public class Grid {
 	// movimientos posibles. Si alguno de ellos genera un movimiento, el juego no
 	// finalizó
 	public boolean isGameOver() {
+		Grid copy = new Grid(copyMatrix());
 		for (MoveDirection direction : MoveDirection.values()) {
-			Grid copy = new Grid(copyMatrix());
 			if (!copy.move(direction).isEmpty())
 				return false;
 		}
 		return true;
 	}
 	
-	public int getValueByPosition(int x, int y) {
+	public int getValueByPosition(int x, int y) throws IndexOutOfBoundsException{
+		if (x < 0 || y < 0 || x >= SIDE || y >= SIDE) {
+			throw new IndexOutOfBoundsException("Invalid indexes, X: " + x + " Y: " + y);
+		}
+		
 		return _matrix[x][y];
 	}
 	
@@ -181,5 +177,9 @@ public class Grid {
 			}
 		}
 		return result;
+	}
+	
+	public int getIncomingNextRandomTile() {
+		return nextRandomTile;
 	}
 }
