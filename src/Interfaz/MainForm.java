@@ -144,7 +144,7 @@ public class MainForm {
 		else {
 			// Calculamos el valor de rosa a bordó
 			int n = (int) Math.round(Math.log(value / 3.0) / Math.log(2));
-			cell.setBackground(new Color(255, 200 - n * 30, 200 - n * 30));
+			cell.setBackground(new Color(255, 200 - n * 20, 200 - n * 20));
 		}
 
 		
