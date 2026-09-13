@@ -1,7 +1,7 @@
 package Interfaz;
 
-import Negocio.GestorPuntajes;
 import Negocio.Grid;
+import Negocio.ScoreManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -207,7 +207,7 @@ public class MainForm {
 				"Registrar Puntaje",
 				JOptionPane.PLAIN_MESSAGE);
 
-		GestorPuntajes.guardarPuntaje(jugador, points);
+		ScoreManager.points(jugador, points);
 	}
 
 	private void showScores() {

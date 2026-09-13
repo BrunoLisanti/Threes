@@ -1,7 +1,7 @@
 package Interfaz;
 
-import Negocio.GestorPuntajes;
-import Negocio.Puntaje;
+import Negocio.ScoreManager;
+import Negocio.Scoring;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.util.List;
@@ -17,47 +17,47 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Diálogo que muestra el ranking de mejores puntajes registrados.
+ * Diálogo que muestra el ranking de mejores Scorings registrados.
  */
 public class ScoresForm extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
 	public ScoresForm(JFrame parent) {
-		super(parent, "Mejores Puntajes", true);
+		super(parent, "Mejores Scorings", true);
 		setSize(360, 420);
 		setLocationRelativeTo(parent);
 		setResizable(false);
 		setLayout(new BorderLayout());
 
-		JLabel titleLbl = new JLabel("Mejores Puntajes", SwingConstants.CENTER);
+		JLabel titleLbl = new JLabel("Mejores Scorings", SwingConstants.CENTER);
 		titleLbl.setFont(new Font("SansSerif", Font.BOLD, 20));
 		titleLbl.setBorder(BorderFactory.createEmptyBorder(15, 10, 10, 10));
 		add(titleLbl, BorderLayout.NORTH);
 
-		List<Puntaje> puntajes = GestorPuntajes.cargarPuntajes();
+		List<Scoring> Scorings = ScoreManager.loadScores();
 
-		if (puntajes.isEmpty()) {
-			JLabel emptyLbl = new JLabel("Todavía no hay puntajes registrados.", SwingConstants.CENTER);
+		if (Scorings.isEmpty()) {
+			JLabel emptyLbl = new JLabel("Todavía no hay Scorings registrados.", SwingConstants.CENTER);
 			emptyLbl.setFont(new Font("SansSerif", Font.ITALIC, 14));
 			add(emptyLbl, BorderLayout.CENTER);
 		} else {
-			add(new JScrollPane(crearTabla(puntajes)), BorderLayout.CENTER);
+			add(new JScrollPane(createTable(Scorings)), BorderLayout.CENTER);
 		}
 
-		JButton cerrarBtn = new JButton("Cerrar");
-		cerrarBtn.setFocusable(false);
-		cerrarBtn.addActionListener(e -> dispose());
+		JButton closeBtn = new JButton("Cerrar");
+		closeBtn.setFocusable(false);
+		closeBtn.addActionListener(e -> dispose());
 
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
-		bottomPanel.add(cerrarBtn);
+		bottomPanel.add(closeBtn);
 		add(bottomPanel, BorderLayout.SOUTH);
 	}
 
-	private JTable crearTabla(List<Puntaje> puntajes) {
-		String[] columnas = { "#", "Jugador", "Puntos" };
-		DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+	private JTable createTable(List<Scoring> Scorings) {
+		String[] columns = { "#", "Jugador", "Puntos" };
+		DefaultTableModel model = new DefaultTableModel(columns, 0) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -66,12 +66,12 @@ public class ScoresForm extends JDialog {
 			}
 		};
 
-		int posicion = 1;
-		for (Puntaje p : puntajes) {
-			modelo.addRow(new Object[] { posicion++, p.getJugador(), p.getPuntos() });
+		int pos = 1;
+		for (Scoring s : Scorings) {
+			model.addRow(new Object[] { pos++, s.getplayer(), s.getpoints() });
 		}
 
-		JTable tabla = new JTable(modelo);
+		JTable tabla = new JTable(model);
 		tabla.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		tabla.setRowHeight(28);
 		tabla.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
