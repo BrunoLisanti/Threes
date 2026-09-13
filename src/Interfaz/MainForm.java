@@ -1,31 +1,23 @@
 package Interfaz;
 
+import Negocio.GestorPuntajes;
+import Negocio.Grid;
+import java.awt.BorderLayout;
 import java.awt.Color;
-
-
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ActionEvent;
-
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-
-import Negocio.Grid;
 
 public class MainForm {
 	private static final int SIZE = 4;
@@ -36,6 +28,7 @@ public class MainForm {
 	private JLabel[][] cells = new JLabel[SIZE][SIZE];
 	private JLabel nextNumberLbl;
 	private JButton restartBtn;
+	private JButton scoresBtn;
 	private boolean gameOver;
 
 
@@ -66,7 +59,11 @@ public class MainForm {
 		frame.setResizable(false);
 		
 		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new javax.swing.BoxLayout(topPanel, javax.swing.BoxLayout.Y_AXIS));
 		topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
+		JPanel infoRow = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+		JPanel buttonsRow = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
 		JLabel titleLbl = new JLabel("Siguiente número: ");
 		titleLbl.setFont(new Font("SansSerif", Font.BOLD, 20));
@@ -79,11 +76,20 @@ public class MainForm {
 		restartBtn.setFont(new Font("SansSerif", Font.ITALIC, 16));
 		restartBtn.setFocusable(false);
 		restartBtn.addActionListener(e -> restartGame());
+
+		scoresBtn = new JButton("Mejores Puntajes");
+		scoresBtn.setFont(new Font("SansSerif", Font.ITALIC, 16));
+		scoresBtn.setFocusable(false);
+		scoresBtn.addActionListener(e -> showScores());
 		
-		topPanel.add(titleLbl);
-		topPanel.add(nextNumberLbl);
-		topPanel.add(Box.createHorizontalStrut(150));
-		topPanel.add(restartBtn);
+		infoRow.add(titleLbl);
+		infoRow.add(nextNumberLbl);
+
+		buttonsRow.add(restartBtn);
+		buttonsRow.add(scoresBtn);
+
+		topPanel.add(infoRow);
+		topPanel.add(buttonsRow);
 		
 		frame.add(topPanel, BorderLayout.NORTH);
 
@@ -190,10 +196,23 @@ public class MainForm {
 
 	private void showGameOver() {
 		int points = grid.calculateAndGetPoints();
-		JOptionPane.showMessageDialog(frame,
-				"No quedan movimientos. Juego terminado.\nPuntaje: " + String.valueOf(points),
-				"Threes!",
-				JOptionPane.INFORMATION_MESSAGE);
+
+		String mensaje = "No quedan movimientos. Juego terminado.\nPuntaje: " + String.valueOf(points);
+		
+
+		JOptionPane.showMessageDialog(frame, mensaje, "Threes!", JOptionPane.INFORMATION_MESSAGE);
+
+		String jugador = JOptionPane.showInputDialog(frame,
+				"Ingresá tu nombre:",
+				"Registrar Puntaje",
+				JOptionPane.PLAIN_MESSAGE);
+
+		GestorPuntajes.guardarPuntaje(jugador, points);
+	}
+
+	private void showScores() {
+		ScoresForm scoresForm = new ScoresForm(frame);
+		scoresForm.setVisible(true);
 	}
 
 	private void bindArrow(String key, String actionName, Runnable onAction) {
