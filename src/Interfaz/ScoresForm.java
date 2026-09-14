@@ -17,32 +17,32 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Diálogo que muestra el ranking de mejores Scorings registrados.
+ * Diálogo que muestra el ranking de mejores puntajes registrados.
  */
 public class ScoresForm extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
 	public ScoresForm(JFrame parent) {
-		super(parent, "Mejores Scorings", true);
+		super(parent, "Mejores Puntajes", true);
 		setSize(360, 420);
 		setLocationRelativeTo(parent);
 		setResizable(false);
 		setLayout(new BorderLayout());
 
-		JLabel titleLbl = new JLabel("Mejores Scorings", SwingConstants.CENTER);
+		JLabel titleLbl = new JLabel("Mejores Puntajes", SwingConstants.CENTER);
 		titleLbl.setFont(new Font("SansSerif", Font.BOLD, 20));
 		titleLbl.setBorder(BorderFactory.createEmptyBorder(15, 10, 10, 10));
 		add(titleLbl, BorderLayout.NORTH);
 
-		List<Scoring> Scorings = ScoreManager.loadScores();
+		List<Scoring> scores = ScoreManager.loadScores();
 
-		if (Scorings.isEmpty()) {
-			JLabel emptyLbl = new JLabel("Todavía no hay Scorings registrados.", SwingConstants.CENTER);
+		if (scores.isEmpty()) {
+			JLabel emptyLbl = new JLabel("Todavía no hay puntajes registrados.", SwingConstants.CENTER);
 			emptyLbl.setFont(new Font("SansSerif", Font.ITALIC, 14));
 			add(emptyLbl, BorderLayout.CENTER);
 		} else {
-			add(new JScrollPane(createTable(Scorings)), BorderLayout.CENTER);
+			add(new JScrollPane(createTable(scores)), BorderLayout.CENTER);
 		}
 
 		JButton closeBtn = new JButton("Cerrar");
@@ -55,7 +55,7 @@ public class ScoresForm extends JDialog {
 		add(bottomPanel, BorderLayout.SOUTH);
 	}
 
-	private JTable createTable(List<Scoring> Scorings) {
+	private JTable createTable(List<Scoring> scores) {
 		String[] columns = { "#", "Jugador", "Puntos" };
 		DefaultTableModel model = new DefaultTableModel(columns, 0) {
 			private static final long serialVersionUID = 1L;
@@ -67,8 +67,8 @@ public class ScoresForm extends JDialog {
 		};
 
 		int pos = 1;
-		for (Scoring s : Scorings) {
-			model.addRow(new Object[] { pos++, s.getplayer(), s.getpoints() });
+		for (Scoring s : scores) {
+			model.addRow(new Object[] { pos++, s.getPlayer(), s.getPoints() });
 		}
 
 		JTable tabla = new JTable(model);

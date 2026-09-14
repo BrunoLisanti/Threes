@@ -22,7 +22,7 @@ import javax.swing.SwingConstants;
 public class MainForm {
 	private static final int SIZE = 4;
 
-	Grid grid;
+	private Grid grid;
 	private JFrame frame;
 	private JPanel board;
 	private JLabel[][] cells = new JLabel[SIZE][SIZE];
@@ -179,7 +179,6 @@ public class MainForm {
 
 		updateBoxes();
 		nextNumberLbl.setText(String.valueOf(grid.getIncomingNextRandomTile()));
-		
 
 		if (grid.isGameOver()) {
 			gameOver = true;
@@ -207,7 +206,7 @@ public class MainForm {
 				"Registrar Puntaje",
 				JOptionPane.PLAIN_MESSAGE);
 
-		ScoreManager.points(jugador, points);
+		ScoreManager.save(jugador, points);
 	}
 
 	private void showScores() {

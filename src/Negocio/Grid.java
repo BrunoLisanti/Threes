@@ -158,11 +158,11 @@ public class Grid {
 		return true;
 	}
 	
-	public int getValueByPosition(int x, int y) throws IndexOutOfBoundsException{
+	public int getValueByPosition(int x, int y) throws IndexOutOfBoundsException {
 		if (x < 0 || y < 0 || x >= SIDE || y >= SIDE) {
 			throw new IndexOutOfBoundsException("Invalid indexes, X: " + x + " Y: " + y);
 		}
-		
+
 		return _matrix[x][y];
 	}
 	
@@ -173,7 +173,7 @@ public class Grid {
 			int val = _matrix[i][j];
 			if (val > 2) {
 				double logBase2 = Math.log(val / 3) / Math.log(2.0);
-				result += 3 * Math.pow(3, logBase2);
+				result += (int) Math.round(3 * Math.pow(3, logBase2));
 			}
 		}
 		return result;

@@ -3,7 +3,7 @@ package Negocio;
 import java.io.Serializable;
 
 
-// Scorings registrado por  player al finalizar una partida
+// Puntaje registrado por un jugador al finalizar una partida
 
 public class Scoring implements Serializable, Comparable<Scoring> {
 
@@ -17,15 +17,15 @@ public class Scoring implements Serializable, Comparable<Scoring> {
 		this.points = points;
 	}
 
-	public String getplayer() {
+	public String getPlayer() {
 		return player;
 	}
 
-	public int getpoints() {
+	public int getPoints() {
 		return points;
 	}
 
-	// Ordenar Scorings, mayor a menor
+	// Ordena de mayor a menor puntaje
 	@Override
 	public int compareTo(Scoring another) {
 		return Integer.compare(another.points, this.points);

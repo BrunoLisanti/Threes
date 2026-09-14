@@ -11,20 +11,19 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Se encarga de guardar y recuperar el registro de mejores Scorings del
- * juego. Los Scoringss se persisten en un archivo binario junto al ejecutable
- * para que se mantengan entre partidas.
+ * Guarda y recupera el ranking de mejores puntajes. Se persisten en un archivo
+ * binario junto al ejecutable para que se mantengan entre partidas.
  */
 public class ScoreManager {
 
-	private static final String SCORE_FILE = "Scorings.dat";
+	private static final String SCORE_FILE = "puntajes.dat";
 	private static final int MAX_SCORE = 10;
 
 	private ScoreManager() {
 		// Clase de utilidad, no instanciable.
 	}
 
-	// Devuelve el ranking actual, ordenado de mayor a menor Scorings.
+	// Devuelve el ranking actual, ordenado de mayor a menor.
 	@SuppressWarnings("unchecked")
 	public static List<Scoring> loadScores() {
 		File archivo = new File(SCORE_FILE);
@@ -40,8 +39,8 @@ public class ScoreManager {
 		}
 	}
 
-	// Agrega un nuevo Scorings al ranking, lo ordena y conserva solo los mejores.
-	public static void points(String player, int points) {
+	// Agrega un puntaje al ranking, lo ordena y conserva solo los mejores.
+	public static void save(String player, int points) {
 		List<Scoring> scores = loadScores();
 		scores.add(new Scoring(player, points));
 		Collections.sort(scores);
@@ -54,15 +53,5 @@ public class ScoreManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	// Indica si un Scorings entraría al ranking de mejores Scorings.
-	public static boolean itsHighScore(int points) {
-		List<Scoring> scores = loadScores();
-
-		if (scores.size() < MAX_SCORE)
-			return true;
-
-		return points > scores.get(scores.size() - 1).getpoints();
 	}
 }
